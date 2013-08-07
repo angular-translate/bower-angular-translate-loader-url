@@ -4,6 +4,6 @@
   "main": "./angular-translate-loader-url.js",
   "dependencies": {
     "angular": "1.0.7",
-    "angular-translate": "~1.0.1"
+    "angular-translate": "~1.0.2"
   }
 }
