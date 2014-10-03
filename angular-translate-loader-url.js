@@ -1,5 +1,5 @@
 /*!
- * angular-translate - v2.4.0 - 2014-09-22
+ * angular-translate - v2.4.1 - 2014-10-03
  * http://github.com/PascalPrecht/angular-translate
  * Copyright (c) 2014 ; Licensed MIT
  */
@@ -12,11 +12,11 @@ angular.module('pascalprecht.translate').factory('$translateUrlLoader', [
         throw new Error('Couldn\'t use urlLoader since no url is given!');
       }
       var deferred = $q.defer();
-      $http(angular.extend({}, options.$http, {
+      $http(angular.extend({
         url: options.url,
         params: { lang: options.key },
         method: 'GET'
-      })).success(function (data) {
+      }, options.$http)).success(function (data) {
         deferred.resolve(data);
       }).error(function (data) {
         deferred.reject(options.key);
