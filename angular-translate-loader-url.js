@@ -1,8 +1,24 @@
 /*!
- * angular-translate - v2.6.1 - 2015-03-01
+ * angular-translate - v2.7.0 - 2015-05-02
  * http://github.com/angular-translate/angular-translate
  * Copyright (c) 2015 ; Licensed MIT
  */
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module unless amdModuleId is set
+    define([], function () {
+      return (factory());
+    });
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory();
+  } else {
+    factory();
+  }
+}(this, function () {
+
 angular.module('pascalprecht.translate')
 /**
  * @ngdoc object
@@ -21,7 +37,11 @@ angular.module('pascalprecht.translate')
  * @param {object} options Options object, which gets the url, key and
  * optional queryParameter ('lang' is used by default).
  */
-.factory('$translateUrlLoader', ['$q', '$http', function ($q, $http) {
+.factory('$translateUrlLoader', $translateUrlLoader);
+
+function $translateUrlLoader($q, $http) {
+
+  'use strict';
 
   return function (options) {
 
@@ -40,10 +60,16 @@ angular.module('pascalprecht.translate')
       method: 'GET'
     }, options.$http)).success(function (data) {
       deferred.resolve(data);
-    }).error(function (data) {
+    }).error(function () {
       deferred.reject(options.key);
     });
 
     return deferred.promise;
   };
-}]);
+}
+$translateUrlLoader.$inject = ['$q', '$http'];
+
+$translateUrlLoader.displayName = '$translateUrlLoader';
+return 'pascalprecht.translate';
+
+}));
