@@ -1,7 +1,7 @@
 /*!
- * angular-translate - v2.7.2 - 2015-06-01
- * http://github.com/angular-translate/angular-translate
- * Copyright (c) 2015 ; Licensed MIT
+ * angular-translate - v2.8.0 - 2015-09-18
+ * 
+ * Copyright (c) 2015 The angular-translate team, Pascal Precht; Licensed MIT
  */
 (function (root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -49,22 +49,20 @@ function $translateUrlLoader($q, $http) {
       throw new Error('Couldn\'t use urlLoader since no url is given!');
     }
 
-    var deferred = $q.defer(),
-        requestParams = {};
+    var requestParams = {};
 
     requestParams[options.queryParameter || 'lang'] = options.key;
 
-    $http(angular.extend({
+    return $http(angular.extend({
       url: options.url,
       params: requestParams,
       method: 'GET'
-    }, options.$http)).success(function (data) {
-      deferred.resolve(data);
-    }).error(function () {
-      deferred.reject(options.key);
-    });
-
-    return deferred.promise;
+    }, options.$http))
+      .then(function(result) {
+        return result.data;
+      }, function () {
+        return $q.reject(options.key);
+      });
   };
 }
 $translateUrlLoader.$inject = ['$q', '$http'];
